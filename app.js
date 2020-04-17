@@ -12,7 +12,7 @@ app.get("/api", (req, res) => {
 app.post("/api/posts", verifyToken, (req, res) => {
   jwt.verify(req.token, "secret", (err, authData) => {
     if (err) {
-      res.send(err);
+      res.sendStatus(403);
     } else {
       res.json({
         msg: "Post created",
@@ -28,7 +28,7 @@ app.post("/api/login", (req, res) => {
     name: "Nijar",
     email: "nijar@g.com",
   };
-  jwt.sign({ user }, "secret", (err, token) => {
+  jwt.sign({ user }, "secret", { expiresIn: "30s" }, (err, token) => {
     if (err) throw err;
     res.json({ token });
   });
